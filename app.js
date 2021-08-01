@@ -31,6 +31,4 @@ app.use('/cards', cardRouters);
 
 app.listen(PORT, () => {
   console.log(`Работает на порте ${PORT}`);
-  console.log('Привет мир')
-  console.log('В чём смысл?')
 })
