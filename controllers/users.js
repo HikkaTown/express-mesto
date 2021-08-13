@@ -128,7 +128,6 @@ module.exports.login = (req,res, next) => {
 
 module.exports.getMeUserInfo = (req, res,next) => {
   const id = req.user._id;
-  console.log(req.user)
   User.findById(id)
     .then(user => {
       res.status(200).send(user);
