@@ -1,4 +1,4 @@
-const {PORT = 3000} = process.env;
+const { PORT = 3000 } = process.env;
 const cardNotFoundMessage = 'Запрашиваемая карточка не найдена';
 const defaultMessageError = 'Произошла ошибка';
 const userNotFoundMessage = 'Запрашиваемый пользователь не найден';
@@ -11,8 +11,8 @@ const mongoConnectionSettings = {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
-  useUnifiedTopology: true
-}
+  useUnifiedTopology: true,
+};
 
 module.exports = {
   PORT,
@@ -24,5 +24,5 @@ module.exports = {
   routesNotFoundMessage,
   incorrectDataMessage,
   mongoServerPath,
-  mongoConnectionSettings
-}
+  mongoConnectionSettings,
+};

@@ -8,16 +8,16 @@ const {
   defaultMessageError,
   cardNotFoundMessage,
   VALIDATION_ERROR_CODE,
-  CASTERROR_CODE
+  CASTERROR_CODE,
 } = require('../utils/constant');
 
 module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
-  const {name, link, _id = owner} =  req.body;
-  Card.create({name, link, owner: _id})
-    .then(card => res.send({data: card}))
+  const { name, link, _id = owner } = req.body;
+  Card.create({ name, link, owner: _id })
+    .then((card) => res.status(200).send({ data: card }))
     .catch((e) => {
-      if(e.name === VALIDATION_ERROR_CODE) {
+      if (e.name === VALIDATION_ERROR_CODE) {
         const err = new IncorrectDataError(incorrectDataMessage);
         next(err);
       } else {
@@ -29,9 +29,9 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then(cards => res.send({data: cards}))
+    .then((cards) => res.status(200).send({ data: cards }))
     .catch((e) => {
-      if(e.name === VALIDATION_ERROR_CODE) {
+      if (e.name === VALIDATION_ERROR_CODE) {
         const err = new IncorrectDataError(incorrectDataMessage);
         next(err);
       } else {
@@ -44,17 +44,16 @@ module.exports.getCards = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   const userId = req.user._id;
   Card.findById(req.params.cardId)
-    .then(card => {
-      if(card === null) {
+    .then((card) => {
+      if (card === null) {
         const err = new NotFoundError(cardNotFoundMessage);
-        next(err)
+        next(err);
       }
-      if(card.owner.toString() === userId) {
-        res.send(card);
+      if (card.owner.toString() === userId) {
         Card.findByIdAndRemove(req.params.cardId)
-          .then(card => res.send(card))
+          .then((removedCard) => res.status(200).send(removedCard))
           .catch((e) => {
-            if(e.name === CASTERROR_CODE) {
+            if (e.name === CASTERROR_CODE) {
               const err = new IncorrectDataError(incorrectDataMessage);
               next(err);
             } else {
@@ -64,11 +63,11 @@ module.exports.deleteCard = (req, res, next) => {
           });
       } else {
         const err = new ForbiddenError('Карточка принадлежит другому пользователю!');
-        next(err)
+        next(err);
       }
     })
     .catch((e) => {
-      if(e.name === CASTERROR_CODE) {
+      if (e.name === CASTERROR_CODE) {
         const err = new IncorrectDataError(incorrectDataMessage);
         next(err);
       } else {
@@ -80,18 +79,18 @@ module.exports.deleteCard = (req, res, next) => {
 
 module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId,
-    {$addToSet: {likes: req.user._id}},
-    {new: true, runValidators: true})
-    .then(card => {
-      if(card === null) {
+    { $addToSet: { likes: req.user._id } },
+    { new: true, runValidators: true })
+    .then((card) => {
+      if (card === null) {
         const err = new NotFoundError(cardNotFoundMessage);
-        next(err)
+        next(err);
       } else {
-        res.send({data: card})
+        res.status(200).send({ data: card });
       }
     })
     .catch((e) => {
-      if(e.name === CASTERROR_CODE) {
+      if (e.name === CASTERROR_CODE) {
         const err = new IncorrectDataError(incorrectDataMessage);
         next(err);
       } else {
@@ -103,18 +102,18 @@ module.exports.likeCard = (req, res, next) => {
 
 module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId, {
-    $pull: {likes: req.user._id}
-  }, {new: true, runValidators: true})
-    .then(card => {
-      if(card === null) {
+    $pull: { likes: req.user._id },
+  }, { new: true, runValidators: true })
+    .then((card) => {
+      if (card === null) {
         const err = new NotFoundError(cardNotFoundMessage);
-        next(err)
+        next(err);
       } else {
-        res.send({data: card})
+        res.status(200).send({ data: card });
       }
     })
     .catch((e) => {
-      if(e.name === CASTERROR_CODE) {
+      if (e.name === CASTERROR_CODE) {
         const err = new IncorrectDataError(incorrectDataMessage);
         next(err);
       } else {
