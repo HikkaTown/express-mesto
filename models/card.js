@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+
+
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -9,6 +11,7 @@ const cardSchema = new mongoose.Schema({
   },
   link: {
     type: String,
+    validate: /[-a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/=]*)?/gi,
     required: true
   },
   owner: {

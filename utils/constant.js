@@ -1,6 +1,3 @@
-const ERROR_NOT_FOUND = 404;
-const ERROR_INCORECT_DATA = 400;
-const ERROR_DEFAULT = 500;
 const {PORT = 3000} = process.env;
 const cardNotFoundMessage = 'Запрашиваемая карточка не найдена';
 const defaultMessageError = 'Произошла ошибка';
@@ -18,9 +15,6 @@ const mongoConnectionSettings = {
 }
 
 module.exports = {
-  ERROR_NOT_FOUND,
-  ERROR_INCORECT_DATA,
-  ERROR_DEFAULT,
   PORT,
   VALIDATION_ERROR_CODE,
   CASTERROR_CODE,
