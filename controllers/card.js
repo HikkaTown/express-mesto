@@ -2,6 +2,7 @@ const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-err');
 const IncorrectDataError = require('../errors/incorrect-data-err');
 const DefaultError = require('../errors/default-err');
+const ForbiddenError = require('../errors/forbidden-err');
 const {
   incorrectDataMessage,
   defaultMessageError,
@@ -62,7 +63,7 @@ module.exports.deleteCard = (req, res, next) => {
             }
           });
       } else {
-        const err = new IncorrectDataError('Карточка принадлежит другому пользователю!');
+        const err = new ForbiddenError('Карточка принадлежит другому пользователю!');
         next(err)
       }
     })
