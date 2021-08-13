@@ -1,18 +1,19 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-empty */
 const jwt = require('jsonwebtoken');
 const IncorrectDataError = require('../errors/incorrect-data-err');
 
 module.exports = (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  const tokenJWT = req.cookies.jwt;
+  if (!tokenJWT) {
     throw new IncorrectDataError('Необходима авторизация');
   }
-  const token = authorization.replace('Bearer ', '');
+  const token = tokenJWT;
   let payload;
 
   try {
     payload = jwt.verify(token, 'some-secret-key');
-  } catch (e) {
-    throw new IncorrectDataError('Необходима авторизация');
+  } catch (next) {
   }
   req.user = payload;
   next();
