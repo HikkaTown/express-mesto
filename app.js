@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const userRouters = require('./routes/users');
 const cardRouters = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const {
   PORT, routesNotFoundMessage, mongoServerPath, mongoConnectionSettings,
@@ -22,6 +23,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(mongoServerPath, mongoConnectionSettings);
+
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -45,6 +48,8 @@ app.use('/cards', auth, cardRouters);
 app.use('/', auth, (req, res) => {
   throw new NotFoundError(routesNotFoundMessage);
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
